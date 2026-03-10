@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Vite App to GitHub Pages
 
 on:
   push:
@@ -15,16 +15,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Pages
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload site artifact
+      - name: Upload build folder
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./dist
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: actions/deploy-pages@v4
